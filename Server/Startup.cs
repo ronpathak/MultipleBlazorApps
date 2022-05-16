@@ -66,8 +66,8 @@ namespace MultipleBlazorApps.Server
 
             app.UseHttpsRedirection();
 
-            //app.MapWhen(ctx => ctx.Request.Host.Port == 5001 ||
-            app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/FirstApp"), first =>
+            //app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/FirstApp"), first =>
+            app.MapWhen(ctx => (ctx.Request.Host.Equals("firstapp.com") || ctx.Request.Path.StartsWithSegments("/FirstApp")), first =>
             {
                 //first.Use((ctx, nxt) =>
                 //{
@@ -86,8 +86,8 @@ namespace MultipleBlazorApps.Server
                 });
             });
 
-            //app.MapWhen(ctx => ctx.Request.Host.Port == 5002 ||
-            app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/SecondApp"), second =>
+            //app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/SecondApp"), second =>
+            app.MapWhen(ctx => (ctx.Request.Host.Equals("secondapp.com") || ctx.Request.Path.StartsWithSegments("/SecondApp")), second =>
             {
 
                 //second.Use((ctx, nxt) =>

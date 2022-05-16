@@ -29,7 +29,7 @@
 
                 <tr>
                     <td>@item.Id</td>
-                    <td>@item.Name</td>
+                    <td @onclick="@(() => GetItem(item.Id))">@item.Name</td>
                     
                     @*<td> <button class="btn btn-info" @onclick="@(() => EditItem(item.Id))">Edit</button></td>
                     <td><button class="btn btn-danger" @onclick="@(() => DeleteItem(item.Id))">Delete</button></td>*@
@@ -39,10 +39,19 @@
         </tbody>
     </table>
 </div>
+
+<ConfirmationModal @ref="Details" onCancel="ModalCancel">
+    <RFConfirmationContent>
+        <p>@Person.Name</p>
+    </RFConfirmationContent>
+</ConfirmationModal>
+
+
 @code {
 
     public List<People> Peoples = new List<People>();
     public People Person = new People();
+    ConfirmationModal Details;
 
     protected override async Task OnInitializedAsync()
     {
@@ -50,11 +59,16 @@
     }
 
 
-    //public async Task GetPerson()
-    //{
-    //    Person = await peopleRepository.GetPeople(3);
-    //}
+    public async Task GetItem(int Id)
+    {
+        Person = await peopleRepository.GetPeople(Id);
+        Details.Show();
+    }
 
+    void ModalCancel()
+    {
+        Details.Hide();
+    }
 
     //public void CreateItem()
     //{
