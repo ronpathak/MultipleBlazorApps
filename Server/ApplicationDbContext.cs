@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MultipleBlazorApps.Shared.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace MultipleBlazorApps.Server
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         // the following is an empty constructor method for this class
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

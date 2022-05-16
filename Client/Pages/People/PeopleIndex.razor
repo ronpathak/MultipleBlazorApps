@@ -1,7 +1,7 @@
 ﻿@page "/people/index"
 @inject IPeopleRepository peopleRepository
 @inject NavigationManager navigationManager
-
+@attribute [Authorize]
 
 <h3>Index People</h3>
 
@@ -30,9 +30,9 @@
                 <tr>
                     <td>@item.Id</td>
                     <td @onclick="@(() => GetItem(item.Id))">@item.Name</td>
-                    
+
                     @*<td> <button class="btn btn-info" @onclick="@(() => EditItem(item.Id))">Edit</button></td>
-                    <td><button class="btn btn-danger" @onclick="@(() => DeleteItem(item.Id))">Delete</button></td>*@
+                        <td><button class="btn btn-danger" @onclick="@(() => DeleteItem(item.Id))">Delete</button></td>*@
                 </tr>
             }
 

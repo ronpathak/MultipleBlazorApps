@@ -4,11 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MultipleBlazorApps.Client.Helpers;
 using MultipleBlazorApps.Client.Repository;
+using MultipleBlazorApps.Client.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace MultipleBlazorApps.Client
 {
@@ -33,6 +35,20 @@ namespace MultipleBlazorApps.Client
             services.AddOptions(); // Authourisation system
             services.AddScoped<IHttpService, HttpServices>();
             services.AddScoped<IPeopleRepository, PeopleRepository>();
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
+
+            services.AddAuthorizationCore();
+            services.AddScoped<JWTAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+            );
+            services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+            );
+
+            services.AddScoped<TokenRenewer>();
+
+            //services.AddScoped<IUserClaims, UserClaims>();
         }
     }
 }

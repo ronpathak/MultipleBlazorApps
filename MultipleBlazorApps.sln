@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultipleBlazorApps.Server", "Server\MultipleBlazorApps.Server.csproj", "{71C8B8C1-7148-44E1-99BA-23EE0C646551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultipleBlazorApps.Server", "Server\MultipleBlazorApps.Server.csproj", "{71C8B8C1-7148-44E1-99BA-23EE0C646551}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultipleBlazorApps.Client", "Client\MultipleBlazorApps.Client.csproj", "{7AD25446-B734-44D0-B243-AAB2926B5E97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultipleBlazorApps.Client", "Client\MultipleBlazorApps.Client.csproj", "{7AD25446-B734-44D0-B243-AAB2926B5E97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultipleBlazorApps.Shared", "Shared\MultipleBlazorApps.Shared.csproj", "{5A47C980-5E19-4AFF-9308-6DB3596E966D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultipleBlazorApps.Shared", "Shared\MultipleBlazorApps.Shared.csproj", "{5A47C980-5E19-4AFF-9308-6DB3596E966D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultipleBlazorApps.SecondClient", "SecondClient\MultipleBlazorApps.SecondClient.csproj", "{8CCF4CFD-6BFC-469C-9E72-C61EEC2CFD13}"
 EndProject

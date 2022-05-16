@@ -6,7 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
+using System.Text;
+using System;
 
 namespace MultipleBlazorApps.Server
 {
@@ -32,6 +37,31 @@ namespace MultipleBlazorApps.Server
             });
 
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
+                    ClockSkew = TimeSpan.Zero
+                });
+
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -79,6 +109,8 @@ namespace MultipleBlazorApps.Server
                 first.UseStaticFiles();
 
                 first.UseRouting();
+                first.UseAuthentication(); // very important to keep this order
+                first.UseAuthorization(); // very important to keep this order
                 first.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
@@ -86,6 +118,8 @@ namespace MultipleBlazorApps.Server
                 });
             });
 
+            //app.UseAuthentication();
+            //app.UseAuthorization(); 
             //app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/SecondApp"), second =>
             app.MapWhen(ctx => (ctx.Request.Host.Equals("secondapp.com") || ctx.Request.Path.StartsWithSegments("/SecondApp")), second =>
             {
@@ -100,6 +134,8 @@ namespace MultipleBlazorApps.Server
                 second.UseStaticFiles();
 
                 second.UseRouting();
+                second.UseAuthentication(); // very important to keep this order
+                second.UseAuthorization(); // very important to keep this order
                 second.UseEndpoints(endpoints =>
                 {
                     endpoints.MapRazorPages();
