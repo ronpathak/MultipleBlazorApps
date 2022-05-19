@@ -16,8 +16,8 @@ using MultipleBlazorApps.Shared.DTOs;
 
 namespace MultipleBlazorApps.Server.Controllers
 {
-    [Route("/FirstApp/[controller]")]
-    [Route("/SecondApp/[controller]")]
+    [Route("/consumer/[controller]")]
+    [Route("/professional/[controller]")]
     [ApiController]
     public class AccountsController: ControllerBase
     {

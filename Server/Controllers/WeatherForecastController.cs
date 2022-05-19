@@ -10,8 +10,8 @@ namespace MultipleBlazorApps.Server.Controllers
 {
     [ApiController]
     //    [Route("[controller]")]
-    [Route("FirstApp/[controller]")]
-    [Route("SecondApp/[controller]")]
+    [Route("/consumer/[controller]")]
+    [Route("/professional/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

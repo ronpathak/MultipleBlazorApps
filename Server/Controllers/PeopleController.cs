@@ -12,8 +12,8 @@ namespace MultipleBlazorApps.Server.Controllers
     //[Route("FirstApp/api/[controller]")]
     //[Route("FirstApp/[controller]")]
     //[Route("SecondApp/[controller]")]
-    [Route("/FirstApp/[controller]")]
-    [Route("/SecondApp/[controller]")]
+    [Route("/consumer/[controller]")]
+    [Route("/professional/[controller]")]
     [ApiController]
     public class PeopleController : ControllerBase
     {

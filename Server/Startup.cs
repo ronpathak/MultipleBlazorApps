@@ -31,7 +31,8 @@ namespace MultipleBlazorApps.Server
             services.AddCors(policy =>
             {
                 policy.AddPolicy("CorsPolicy", opt => opt
-                    .WithOrigins("http://localhost:44344/FirstApp", "https://localhost:44344/SecondApp")
+                    .WithOrigins("https://localhost:44381","https://localhost:44344","http://localhost:44344/consumer", "https://localhost:44381/professional", "https://portal.mypropertyviewings.com", "https://portal.mypropertyviewings.co.uk")
+                    //.WithOrigins("https://localhost:5001", "https://localhost:5002", "http://localhost:44344/consumer", "https://localhost:44381/professional", "https://portal.mypropertyviewings.com", "https://portal.mypropertyviewings.co.uk")
                     .AllowAnyHeader()
                     .AllowAnyMethod());
             });
@@ -81,58 +82,42 @@ namespace MultipleBlazorApps.Server
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
-            //app.UseBlazorFrameworkFiles();
-            //app.UseStaticFiles();
-
-            //app.UseRouting();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapRazorPages();
-            //    endpoints.MapControllers();
-            //    endpoints.MapFallbackToFile("index.html");
-            //});
-
             app.UseHttpsRedirection();
-
-            //app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/FirstApp"), first =>
-            app.MapWhen(ctx => (ctx.Request.Host.Equals("firstapp.com") || ctx.Request.Path.StartsWithSegments("/FirstApp")), first =>
+            //app.MapWhen(ctx => (ctx.Request.Host.Equals("https://portal.mypropertyviewings.com/consumer") || ctx.Request.Host.Value.Contains("consumer")), first =>
+            app.MapWhen(ctx => (ctx.Request.Host.Equals("mypropertyviewings.com") || ctx.Request.Path.StartsWithSegments("/consumer")), first =>
+            //app.MapWhen(ctx => (ctx.Request.Host.Port == 44344 || ctx.Request.Host.Equals("portal.mypropertyviewings.com") || ctx.Request.Path.StartsWithSegments("/consumer")), first =>
             {
                 //first.Use((ctx, nxt) =>
                 //{
-                //    ctx.Request.Path = "/FirstApp" + ctx.Request.Path;
+                //    ctx.Request.Path = "/consumer" + ctx.Request.Path;
                 //    return nxt();
                 //});
-
-                first.UseBlazorFrameworkFiles("/FirstApp");
+                first.UseBlazorFrameworkFiles("/consumer");
                 first.UseStaticFiles();
-
+                first.UseStaticFiles("/consumer");
                 first.UseRouting();
-                first.UseAuthentication(); // very important to keep this order
-                first.UseAuthorization(); // very important to keep this order
+                first.UseAuthentication(); 
+                first.UseAuthorization(); 
                 first.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                    endpoints.MapFallbackToFile("FirstApp/{*path:nonfile}", "FirstApp/index.html");
+                    endpoints.MapFallbackToFile("consumer/{*path:nonfile}", "consumer/index.html");
                 });
             });
 
-            //app.UseAuthentication();
-            //app.UseAuthorization(); 
-            //app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/SecondApp"), second =>
-            app.MapWhen(ctx => (ctx.Request.Host.Equals("secondapp.com") || ctx.Request.Path.StartsWithSegments("/SecondApp")), second =>
+            app.MapWhen(ctx => (ctx.Request.Host.Equals("https://portal.mypropertyviewings.co.uk") || ctx.Request.Path.StartsWithSegments("/professional")), second =>
+            //app.MapWhen(ctx => (ctx.Request.Host.Port == 44381 || ctx.Request.Host.Equals("portal.mypropertyviewings.co.uk") || ctx.Request.Path.StartsWithSegments("/professional")), second =>
             {
 
                 //second.Use((ctx, nxt) =>
                 //{
-                //    ctx.Request.Path = "/SecondApp" + ctx.Request.Path;
+                //    ctx.Request.Path = "/professional" + ctx.Request.Path;
                 //    return nxt();
                 //});
 
-                second.UseBlazorFrameworkFiles("/SecondApp");
+                second.UseBlazorFrameworkFiles("/professional");
                 second.UseStaticFiles();
-
+                second.UseStaticFiles("/professional");
                 second.UseRouting();
                 second.UseAuthentication(); // very important to keep this order
                 second.UseAuthorization(); // very important to keep this order
@@ -140,7 +125,7 @@ namespace MultipleBlazorApps.Server
                 {
                     endpoints.MapRazorPages();
                     endpoints.MapControllers();
-                    endpoints.MapFallbackToFile("SecondApp/{*path:nonfile}", "SecondApp/index.html");
+                    endpoints.MapFallbackToFile("professional/{*path:nonfile}", "professional/index.html");
                 });
             });
 
