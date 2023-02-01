@@ -1,0 +1,20 @@
+﻿
+
+<div class="my-component">
+    This component is defined in the <strong>MultiBlazorApps.Components</strong> library.
+</div>
+
+<button class="my-button" @onclick="AddNewBlock"></button>
+
+<RightSideDrawer @ref="InputBlockForm" />
+
+@code{
+     public RightSideDrawer InputBlockForm;
+
+
+        public async Task AddNewBlock()
+    {
+        await InputBlockForm.Show();
+    }
+
+}

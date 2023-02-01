@@ -1,10 +1,13 @@
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true"
+        AdditionalAssemblies="new[] {typeof(ExampleJsInterop).Assembly}">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
-    <NotFound>
+    <NotFound>        
+        <CascadingAuthenticationState>
         <LayoutView Layout="@typeof(MainLayout)">
             <p>Sorry, there's nothing at this address.</p>
         </LayoutView>
+        </CascadingAuthenticationState>
     </NotFound>
 </Router>

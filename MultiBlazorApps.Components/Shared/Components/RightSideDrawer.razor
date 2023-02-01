@@ -1,0 +1,44 @@
+﻿
+    <div id="myRsidedrawer" class="Rsidedrawer @(((DisplayForm)? "RsidedrawerOpen" : ""))">
+        <div class="sidedrawer-form">
+            <div class="modal-header sidedrawer-modal-header " style="height: 80px;">
+                <h4 class="modal-title sidedrawer-modal-title" id="RModalScrollableTitle">@FormType @Title</h4>
+                <button type="button" class="close closebtn" @onclick="FormComplete" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="sidedrawer-modal-dialog-scrollable" role="document">
+                <div class="modal-content side-modal-content">
+
+
+                    @RFFormContent
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+@*}*@
+
+@code {
+    [Parameter] public RenderFragment RFFormContent { get; set; }
+    [Parameter] public string Title { get; set; }= "Job";
+    [Parameter] public string FormType { get; set; } = "Add New";
+    [Parameter] public EventCallback FormComplete { get; set; }
+    //[Parameter] public EventCallback onCancel { get; set; }
+    private bool DisplayForm = false;
+
+
+
+    public async Task Show()
+    {
+        StateHasChanged();
+        DisplayForm = true;
+    }
+
+    public async Task Hide()
+    {
+        DisplayForm = false;
+    }
+
+}

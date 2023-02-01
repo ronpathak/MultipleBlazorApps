@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.my-button{
+    background-color: orange;
+    color: white;
+    width: 200px;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+}

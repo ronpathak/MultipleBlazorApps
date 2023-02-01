@@ -84,14 +84,13 @@ namespace MultipleBlazorApps.Server
 
             app.UseHttpsRedirection();
             
-            //app.MapWhen(ctx => (ctx.Request.Host.Equals("portal.mypropertyviewings.com") || ctx.Request.Path.StartsWithSegments("/consumer")), first =>
-            app.MapWhen(ctx => (ctx.Request.Host.Port == 5001 || ctx.Request.Host.Port == 44344 || ctx.Request.Host.Equals("mypropertyviewings.com")), first =>
+            app.MapWhen(ctx => (ctx.Request.Host.Equals("mypropertyviewings.com") || ctx.Request.Path.StartsWithSegments("/consumer")), first =>
             {
-                first.Use((ctx, nxt) =>
-                {
-                    ctx.Request.Path = "/consumer" + ctx.Request.Path;
-                    return nxt();
-                });
+                //first.Use((ctx, nxt) =>
+                //{
+                //    ctx.Request.Path = "/consumer" + ctx.Request.Path;
+                //    return nxt();
+                //});
                 first.UseBlazorFrameworkFiles("/consumer");
                 first.UseStaticFiles();
                 first.UseStaticFiles("/consumer");
@@ -105,15 +104,14 @@ namespace MultipleBlazorApps.Server
                 });
             });
 
-            //app.MapWhen(ctx => (ctx.Request.Host.Equals("portal.mypropertyviewings.co.uk") || ctx.Request.Path.StartsWithSegments("/professional")), second =>
-            app.MapWhen(ctx => (ctx.Request.Host.Port == 5002 || ctx.Request.Host.Port == 44381 ||  ctx.Request.Host.Equals("mypropertyviewings.co.uk")), second =>
+            app.MapWhen(ctx => (ctx.Request.Host.Equals("https://portal.mypropertyviewings.co.uk/") || ctx.Request.Path.StartsWithSegments("/professional")), second =>
             {
 
-                second.Use((ctx, nxt) =>
-                {
-                    ctx.Request.Path = "/professional" + ctx.Request.Path;
-                    return nxt();
-                });
+                //second.Use((ctx, nxt) =>
+                //{
+                //    ctx.Request.Path = "/professional" + ctx.Request.Path;
+                //    return nxt();
+                //});
 
                 second.UseBlazorFrameworkFiles("/professional");
                 second.UseStaticFiles();

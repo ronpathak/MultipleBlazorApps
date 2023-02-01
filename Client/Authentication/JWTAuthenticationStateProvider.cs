@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using MultipleBlazorApps.Client.Helpers;
 using MultipleBlazorApps.Client.Repository;
 using MultipleBlazorApps.Shared.DTOs;
+using MultiBlazorApps.Components.Repository;
+using MultiBlazorApps.Components.Helpers;
 
 namespace MultipleBlazorApps.Client.Authentication
 {

@@ -2,13 +2,18 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MultipleBlazorApps.SecondClient.Helpers;
-using MultipleBlazorApps.SecondClient.Repository;
+//using MultipleBlazorApps.SecondClient.Helpers;
+//using MultipleBlazorApps.SecondClient.Repository;
+using MultipleBlazorApps.SecondClient.Authentication;
+using MultiBlazorApps.Components.Repository;
+using MultiBlazorApps.Components.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
+
 
 namespace MultipleBlazorApps.SecondClient
 {
@@ -31,7 +36,21 @@ namespace MultipleBlazorApps.SecondClient
         {
             services.AddOptions(); // Authourisation system
             services.AddScoped<IHttpService, HttpServices>();
+            //services.AddTransient<IPeopleRepository, PeopleRepository>();
             services.AddScoped<IPeopleRepository, PeopleRepository>();
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
+
+            services.AddAuthorizationCore();
+            services.AddScoped<JWTAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+            );
+            services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+            );
+
+            services.AddScoped<TokenRenewer>();
+
         }
     }
 }

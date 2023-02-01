@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MultipleBlazorApps.Client.Helpers;
+//using MultipleBlazorApps.Client.Helpers;
 using MultipleBlazorApps.Client.Repository;
+using MultiBlazorApps.Components.Repository;
+using MultiBlazorApps.Components.Helpers;
 using MultipleBlazorApps.Client.Authentication;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,7 @@ namespace MultipleBlazorApps.Client
         {
             services.AddOptions(); // Authourisation system
             services.AddScoped<IHttpService, HttpServices>();
+            services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IPeopleRepository, PeopleRepository>();
             services.AddScoped<IAccountsRepository, AccountsRepository>();
 

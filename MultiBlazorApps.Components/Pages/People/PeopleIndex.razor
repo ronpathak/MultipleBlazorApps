@@ -1,0 +1,89 @@
+﻿@page "/people/index"
+
+@inject IPeopleRepository peopleRepository
+@inject NavigationManager navigationManager
+@attribute [Authorize]
+
+<h3>Index People on RCL</h3>
+
+<div class="container">
+    <table class="table table-hover">
+        <colgroup>
+            <col style="width:5%; text-align:left;">
+            <col style="width:60%; text-align:left;">
+            <col style="width:25%; text-align:left;">
+            <col style="width:5%; text-align:center;">
+            <col style="width:5%; text-align:center;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Company</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Peoples)
+            {
+
+                <tr>
+                    <td>@item.Id</td>
+                    <td @onclick="@(() => GetItem(item.Id))">@item.Name</td>
+
+                    @*<td> <button class="btn btn-info" @onclick="@(() => EditItem(item.Id))">Edit</button></td>
+                        <td><button class="btn btn-danger" @onclick="@(() => DeleteItem(item.Id))">Delete</button></td>*@
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<ConfirmationModal @ref="Details" onCancel="ModalCancel">
+    <RFConfirmationContent>
+        <p>@Person.Name</p>
+    </RFConfirmationContent>
+</ConfirmationModal>
+
+
+@code {
+
+    public List<People> Peoples = new List<People>();
+    public People Person = new People();
+    ConfirmationModal Details;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Peoples = await peopleRepository.GetPeoples();
+    }
+
+
+    public async Task GetItem(int Id)
+    {
+        Person = await peopleRepository.GetPeople(Id);
+        Details.Show();
+    }
+
+    void ModalCancel()
+    {
+        Details.Hide();
+    }
+
+    //public void CreateItem()
+    //{
+    //    navigationManager.NavigateTo($"/people/create");
+    //}
+
+    //public void EditItem(int ID)
+    //{
+    //    navigationManager.NavigateTo($"/people/edit/{ID}");
+    //}
+
+    //public void DeleteItem(int ID)
+    //{
+    //    peopleRepository.DeletePeople(ID);
+    //    StateHasChanged();
+    //}
+}

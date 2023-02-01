@@ -1,0 +1,27 @@
+﻿/*Right Side Drawer For Forms*/
+.Rsidedrawer {
+    height: 100%;
+    padding: 0px;
+    width: 0%;
+    position: fixed;
+    margin-top: 45px;
+    z-index: 4;
+    top: 0;
+    right: 0px;
+    background-color: orange;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.RsidedrawerOpen {
+    width: 600px;
+    padding: 0 10px;
+}
+
+@media screen and (max-width: 992px) {
+    .RsidedrawerOpen {
+        width: 100%;
+        margin-top: 0px;
+        height: 100%;
+    }
+}
