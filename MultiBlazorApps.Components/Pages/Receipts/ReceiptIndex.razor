@@ -1,0 +1,76 @@
+﻿@page "/receipt/index"
+
+@inject IReceiptRepository receiptRepository
+@inject NavigationManager navigationManager
+@*@attribute [Authorize]*@
+
+<h3>Index Receipts on RCL</h3>
+
+<button class="btn btn-primary" @onclick="@CreateItem">Add</button>
+
+<div class="container">
+    <table class="table table-hover">
+        <colgroup>
+            <col style="width:5%; text-align:left;">
+            <col style="width:50%; text-align:left;">
+            <col style="width:20%; text-align:left;">
+            <col style="width:25%; text-align:center;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Total</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Receipts)
+            {
+
+                <tr>
+                    <td @onclick="@(() => GetItem(item.Id))">@item.Id</td>
+                    <td >@item.Vendor</td>
+                    <td>@item.Total</td>
+                    <td>@item.Date.ToString("dd MMM yy")</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<ConfirmationModal @ref="ReceiptDetails" onCancel="ModalCancel">
+    <RFConfirmationContent>
+        <p>@Receipt.Vendor (@Receipt.Total)</p>
+    </RFConfirmationContent>
+</ConfirmationModal>
+
+
+@code {
+
+    public List<Receipt> Receipts = new List<Receipt>();
+    public Receipt Receipt = new Receipt();
+    ConfirmationModal ReceiptDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Receipts = await receiptRepository.GetReceipts();
+    }
+
+    public void CreateItem()
+    {
+        navigationManager.NavigateTo($"receipt/create");
+    }
+
+    public async Task GetItem(int Id)
+    {
+        Receipt = await receiptRepository.GetReceipt(Id);
+        ReceiptDetails.Show();
+    }
+
+    void ModalCancel()
+    {
+        ReceiptDetails.Hide();
+    }
+}

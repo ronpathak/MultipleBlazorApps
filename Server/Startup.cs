@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using System.Text;
 using System;
+using MultipleBlazorApps.Server.Helpers;
+using MultipleBlazorApps.Server.Services;
 
 namespace MultipleBlazorApps.Server
 {
@@ -65,6 +67,8 @@ namespace MultipleBlazorApps.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddScoped<IFileStorageService, AzureStorageService>();
+            services.AddScoped<IReceiptReaderService, ReceiptReaderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,8 +121,8 @@ namespace MultipleBlazorApps.Server
                 second.UseStaticFiles();
                 second.UseStaticFiles("/professional");
                 second.UseRouting();
-                //second.UseAuthentication();
-                //second.UseAuthorization();
+                second.UseAuthentication();
+                second.UseAuthorization();
                 second.UseEndpoints(endpoints =>
                 {
                     endpoints.MapRazorPages();

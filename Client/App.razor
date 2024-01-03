@@ -1,5 +1,5 @@
 <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true"
-    AdditionalAssemblies="new[] {typeof(ExampleJsInterop).Assembly}"
+    AdditionalAssemblies="new[] {typeof(MainLayout).Assembly}"
         >
     <Found Context="routeData">
         <AuthorizeRouteView  RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />

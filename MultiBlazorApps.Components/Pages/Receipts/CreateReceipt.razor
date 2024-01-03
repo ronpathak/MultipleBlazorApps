@@ -1,0 +1,23 @@
+﻿@page "/receipt/create"
+@inject IReceiptRepository receiptRepository
+@inject NavigationManager navigationManager
+
+<h3>Create Receipt</h3>
+
+<ReceiptForm receipt="Receipt"    AcceptDataTypes="AcceptDataTypes" OnValidSubmit="Create" />
+
+@code {
+    Receipt Receipt = new Receipt();
+    public List<string> AcceptDataTypes = new List<string> { ".jpg"," .jpeg"," .png", " .pdf" };
+
+    private async Task Create()
+    {
+
+            await receiptRepository.CreateReceipt(Receipt);
+            navigationManager.NavigateTo("receipt/index");
+
+
+    }
+
+
+}

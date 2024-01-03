@@ -1,0 +1,23 @@
+﻿@page "/tenancy/create"
+@inject ITenancyRepository tenancyRepository
+@inject NavigationManager navigationManager
+
+<h3>CreateTenancy</h3>
+
+<TenancyForm tenancy="Tenancy"    AcceptDataTypes="AcceptDataTypes" OnValidSubmit="Create" />
+
+@code {
+    Tenancy Tenancy = new Tenancy();
+    public List<string> AcceptDataTypes = new List<string> { ".jpg"," .jpeg"," .png", " .pdf" };
+
+    private async Task Create()
+    {
+
+            await tenancyRepository.CreateTenancy(Tenancy);
+            navigationManager.NavigateTo("tenancy/index");
+
+
+    }
+
+
+}

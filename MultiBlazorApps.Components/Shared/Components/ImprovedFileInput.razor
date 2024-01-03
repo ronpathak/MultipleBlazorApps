@@ -1,0 +1,87 @@
+﻿<div class="property-profile-document-input">
+
+    @if (imageBase64 != null)
+    {
+        if (uploadedFileType == ".pdf")
+        {
+            <h6><span class="oi oi-file"></span>@uploadedFileName</h6>
+        }
+        else
+        {
+            <img src="data:image/jpeg;base64, @imageBase64" class="input-image-preview" />
+        }
+    }
+    @if (ImageURL != null)
+    {
+        if (uploadedFileType == ".pdf")
+        {
+            <h6><span class="oi oi-file"></span>@SavedFileName</h6>
+        }
+        else
+        {
+            <img src="@ImageURL" class="input-document-preview" />
+        }
+    }
+        <div class="file btn btn-lg btn-primary" style="@((ImageURL == null && imageBase64 == null) ? "margin-top: 45px;" : "margin-top: 15px;")">
+            @((ImageURL == null && imageBase64 == null) ? "Add Document" : "Change Document"))
+            <InputFile accept="@AcceptableDataTypes" OnChange="OnChange" />
+        </div>
+    </div>
+
+    @code {
+
+        [Parameter] public string Label { get; set; } = "Image";
+
+        [Parameter] public string ImageURL { get; set; }
+
+        [Parameter] public EventCallback<UploadFileImageDTO> OnSelectedImage { get; set; }
+
+        [Parameter] public string SavedFileName { get; set; }
+
+        [Parameter] public List<string> AcceptableDataTypes { get; set; }
+
+        private string imageBase64;
+
+        ElementReference inputElement;
+        string uploadedFileName;
+        string uploadedFileType;
+        UploadFileImageDTO FileDTO;
+
+        protected override async Task OnInitializedAsync()
+        {
+            uploadedFileType = System.IO.Path.GetExtension(SavedFileName);
+            Console.WriteLine(uploadedFileType);
+            StateHasChanged();
+        }
+
+        async Task OnChange(InputFileChangeEventArgs e)
+        {
+            var imagesFiles = e.GetMultipleFiles();
+
+            foreach (var imageFile in imagesFiles)
+            {
+                uploadedFileName = imageFile.Name;
+                Console.WriteLine(uploadedFileName);
+                uploadedFileType = imageFile.ContentType;
+                uploadedFileType = System.IO.Path.GetExtension(uploadedFileName);
+                Console.WriteLine(uploadedFileType);
+
+
+
+            //var buffer = new byte[imageFile.Size];
+            //await imageFile.OpenReadStream().ReadAsync(buffer);
+
+                var buffer = new byte[imageFile.Size];
+                await imageFile.OpenReadStream(5000000).ReadAsync(buffer);
+                imageBase64 = Convert.ToBase64String(buffer);
+                FileDTO = new UploadFileImageDTO()
+                {
+                    ImageBase64 = imageBase64,
+                    UploadedFileName = uploadedFileName
+                };
+                await OnSelectedImage.InvokeAsync(FileDTO);
+                ImageURL = null;
+                StateHasChanged();
+            }
+        }
+    }

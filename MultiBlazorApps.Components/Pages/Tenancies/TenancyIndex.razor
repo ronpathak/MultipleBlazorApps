@@ -1,0 +1,76 @@
+﻿@page "/tenancy/index"
+
+@inject ITenancyRepository tenancyRepository
+@inject NavigationManager navigationManager
+@*@attribute [Authorize]*@
+
+<h3>Index Tenancys on RCL</h3>
+
+<button class="btn btn-primary" @onclick="@CreateItem">Add</button>
+
+<div class="container">
+    <table class="table table-hover">
+        <colgroup>
+            <col style="width:5%; text-align:left;">
+            <col style="width:50%; text-align:left;">
+            <col style="width:20%; text-align:left;">
+            <col style="width:25%; text-align:center;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Rent</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Tenancys)
+            {
+
+                <tr>
+                    <td @onclick="@(() => GetItem(item.Id))">@item.Id</td>
+                    <td >@item.AttachmentName</td>
+                    <td>@item.RentAmount</td>
+                    <td>@item.StartDate.ToString("dd MMM yy") to @item.EndDate.ToString("dd MMM yy")  </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<ConfirmationModal @ref="TenancyDetails" onCancel="ModalCancel">
+    <RFConfirmationContent>
+        <p>@Tenancy.AttachmentName (@Tenancy.RentAmount)</p>
+    </RFConfirmationContent>
+</ConfirmationModal>
+
+
+@code {
+
+    public List<Tenancy> Tenancys = new List<Tenancy>();
+    public Tenancy Tenancy = new Tenancy();
+    ConfirmationModal TenancyDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tenancys = await tenancyRepository.GetTenancys();
+    }
+
+    public void CreateItem()
+    {
+        navigationManager.NavigateTo($"tenancy/create");
+    }
+
+    public async Task GetItem(int Id)
+    {
+        Tenancy = await tenancyRepository.GetTenancy(Id);
+        TenancyDetails.Show();
+    }
+
+    void ModalCancel()
+    {
+        TenancyDetails.Hide();
+    }
+}

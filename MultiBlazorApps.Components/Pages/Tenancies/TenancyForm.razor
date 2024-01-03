@@ -1,0 +1,62 @@
+﻿
+
+
+<EditForm Model="tenancy" OnValidSubmit="OnDataAnnotationsValidated">
+
+@*    <div class="form-group">
+        <label> Name </label>
+        <InputText class="form-control" @bind-Value="@tenancy.Vendor"></InputText>
+    </div>*@
+
+
+    <div class="form-group">
+        @*<ModifiedInputImageOrFile Label="Picture" AcceptableDataTypes="AcceptDataTypes" OnSelectedImage="PictureSelected" ImageURL="@imageURL" SavedFileName="@tenancy.AttachmentName" />*@
+        <ImprovedFileInput Label="Picture" AcceptableDataTypes="AcceptDataTypes" OnSelectedImage="PictureSelected" ImageURL="@imageURL" SavedFileName="@tenancy.Attachment" />
+
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+</EditForm>
+
+
+
+@code {
+
+    @* These parameter are going to be used when exporting this razor component*@
+[Parameter] public Tenancy tenancy { get; set; }
+
+[Parameter] public EventCallback OnValidSubmit { get; set; }
+
+[Parameter] public List<string> AcceptDataTypes { get; set; } = new List<string> { ".jpg, .jpeg, .png, .pdf" };
+
+    @* These parameter are going to be used when importing the InputImage razor component*@
+
+string imageURL;
+
+@* Given that the InputImage razor component can be used for both creating and editing images, we need to check if there are any pictures to uploaded at the beginning for editing *@
+protected override async Task OnInitializedAsync()
+{
+
+    if (!string.IsNullOrEmpty(tenancy.Attachment))
+    {
+        imageURL = tenancy.Attachment;
+        tenancy.Attachment = null;
+    }
+}
+
+
+private void PictureSelected(UploadFileImageDTO FileDTO)
+{
+    tenancy.Attachment = FileDTO.ImageBase64;
+    tenancy.AttachmentName = FileDTO.UploadedFileName;
+    imageURL = null;
+}
+
+private async Task OnDataAnnotationsValidated()
+{
+    await OnValidSubmit.InvokeAsync(null);
+}
+
+}

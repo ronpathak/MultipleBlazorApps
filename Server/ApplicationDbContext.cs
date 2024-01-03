@@ -33,8 +33,10 @@ namespace MultipleBlazorApps.Server
         // the following defines the classes / tables to be created
 
         public DbSet<People> People { get; set; }
-        public DbSet<Note> Note{ get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
 
+        public DbSet<Note> Note{ get; set; }
+        public DbSet<Tenancy> Tenancies { get; set; }
     }
 
 }
